@@ -16,6 +16,7 @@ import {
   lineHeights,
   fontFamily,
 } from './typography.data';
+import { zIndex } from './z-index.data';
 
 import type { Colors } from './colors.data';
 import type { Elevation } from './elevation.data';
@@ -128,11 +129,17 @@ const colors: Colors = {
     darkColorScheme.$primary_light_grey,
   $toggle_switch_container_outline: lightColorScheme.$primary_accent_purple_0_3,
   $toggle_switch_thumb_bgColor: darkColorScheme.$primary_white,
+
+  $side_drawer_container_bgColor: darkColorScheme.$primary_light_black,
+  $side_drawer_separator_bgColor: darkColorScheme.$primary_mid_grey,
+  $side_drawer_head_title_color: darkColorScheme.$primary_white,
+  $side_drawer_content_title_color: darkColorScheme.$primary_white,
+  $side_drawer_content_description_color: darkColorScheme.$primary_light_grey,
 };
 
 const elevation: Elevation = {
   $tooltip: '0px 0px 16px rgba(167, 143, 160, 0.2)',
-  $dialog: '0px 0px 20px rgba(167, 143, 160, 0.15)',
+  $dialog: 'none',
   $primaryButton: 'none',
   $assets: '0px 0px 5px rgba(0, 0, 0, 0.05), 0px 0px 10px rgba(0, 0, 0, 0.05)',
   $card: 'none',
@@ -148,4 +155,5 @@ export const darkTheme = createTheme(vars, {
   radius,
   elevation,
   opacities,
+  zIndex,
 });
