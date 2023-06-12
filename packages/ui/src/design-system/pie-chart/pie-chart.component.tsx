@@ -1,4 +1,4 @@
-/* eslint-disable functional/prefer-immutable-types, @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable  @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
 
 import {
@@ -13,33 +13,44 @@ import { PieChartGradientColor } from './constants';
 
 import type { ColorValueHex } from '../../types';
 import type { CellProps, TooltipProps } from 'recharts';
-import type { PickByValue } from 'utility-types';
 
 type PieChartDataProps = Partial<{
   overrides: CellProps;
 }>;
+
 type PieChartColor = ColorValueHex | PieChartGradientColor;
-interface PieChartBaseProps<T extends object> {
+
+type CustomData = object;
+
+interface Data {
+  name: string;
+  value: number;
+}
+
+type ValueType = (number | string)[] | number | string;
+type NameType = number | string;
+
+interface PieChartBaseProps<T extends CustomData | Data> {
   colors: PieChartColor[];
   data: (PieChartDataProps & T)[];
   direction?: 'clockwise' | 'counterclockwise';
-  tooltip?: TooltipProps<number, string>['content'];
+  tooltip?: TooltipProps<ValueType, NameType>['content'];
 }
-interface PieChartCustomKeyProps<T extends object>
+interface PieChartCustomKeyProps<T extends CustomData>
   extends PieChartBaseProps<T> {
-  nameKey: keyof PickByValue<T, string>;
-  valueKey: keyof PickByValue<T, number>;
+  nameKey: keyof T;
+  valueKey: keyof T;
 }
-interface PieChartDefaultKeyProps<T extends { name: string; value: number }>
-  extends PieChartBaseProps<T> {
+interface PieChartDefaultKeyProps<T extends Data> extends PieChartBaseProps<T> {
   nameKey?: 'name';
   valueKey?: 'value';
 }
 
-export type PieChartProps<T extends object | { name: string; value: number }> =
-  T extends { name: string; value: number }
-    ? PieChartDefaultKeyProps<T>
-    : PieChartCustomKeyProps<T>;
+export type PieChartProps<T extends CustomData | Data> = T extends Data
+  ? PieChartDefaultKeyProps<T>
+  : T extends CustomData
+  ? PieChartCustomKeyProps<T>
+  : never;
 
 const formatPieColor = (color: PieChartColor): string =>
   PieChartGradientColor[color as PieChartGradientColor]
@@ -58,14 +69,14 @@ const formatPieColor = (color: PieChartColor): string =>
  * @param tooltip component accepted by Recharts Tooltip `content` prop
  * @param valueKey object key of a `data` item that will be used as value (displayed in the tooltip)
  */
-export const PieChart = <T extends object | { name: string; value: number }>({
+export const PieChart = <T extends CustomData | Data>({
   colors,
   data,
   direction = 'clockwise',
   nameKey = 'name',
   tooltip,
   valueKey = 'value',
-}: PieChartProps<T>): JSX.Element => (
+}: Readonly<PieChartProps<T>>): JSX.Element => (
   <ResponsiveContainer aspect={1}>
     <RechartsPieChart>
       <defs>
