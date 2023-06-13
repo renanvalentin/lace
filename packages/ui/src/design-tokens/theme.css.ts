@@ -11,7 +11,6 @@ import {
   lineHeights,
   fontFamily,
 } from './typography.data';
-import { zIndex } from './z-index.data';
 
 export const vars = createThemeContract({
   spacing,
@@ -23,7 +22,6 @@ export const vars = createThemeContract({
   radius,
   elevation,
   opacities,
-  zIndex,
 });
 
 export type Theme = typeof vars;

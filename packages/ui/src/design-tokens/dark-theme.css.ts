@@ -16,7 +16,6 @@ import {
   lineHeights,
   fontFamily,
 } from './typography.data';
-import { zIndex } from './z-index.data';
 
 import type { Colors } from './colors.data';
 import type { Elevation } from './elevation.data';
@@ -155,5 +154,4 @@ export const darkTheme = createTheme(vars, {
   radius,
   elevation,
   opacities,
-  zIndex,
 });
